@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class ResourceWordListProvider implements WordProvider {
 
   private final List<String> words;
 
-  public ResourceWordListProvider() {
-    Resource resource = new ClassPathResource("word-list.txt");
+  public ResourceWordListProvider(@Value("${diceware.word-list}") String wordList) {
+    Resource resource = new ClassPathResource(wordList);
     try (Stream<String> lines = Files.lines(Paths.get(resource.getURI()))) {
       words = lines
           .map(String::strip)
